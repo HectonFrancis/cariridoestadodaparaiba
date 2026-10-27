@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cariri Paraibano Interativo</title>
+<style>
+:root {
+  --verde: #245b3b;
+  --verde2: #38784e;
+  --areia: #f4e8c8;
+  --terra: #b65d35;
+  --texto: #203027;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f4eb;
+  color: var(--texto);
+  line-height: 1.6;
+}
+header {
+  background: linear-gradient(120deg, #173f2a, #4b8050);
+  color: white;
+  padding: 38px 18px;
+  text-align: center;
+}
+header h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+nav {
+  background: #173f2a;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+nav a:hover { background: var(--verde2); }
+main { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 22px;
+  margin: 18px 0;
+  box-shadow: 0 4px 14px #0000000d;
+}
+h2 { color: var(--verde); }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+.tile {
+  padding: 16px;
+  background: #fffaf0;
+  border: 1px solid #eadfc7;
+  border-radius: 12px;
+}
+button {
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 15px;
+  background: var(--verde);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 5px 3px;
+}
+button:hover { background: var(--verde2); }
+.secondary { background: #8a512e; }
+input[type="text"], textarea {
+  padding: 10px;
+  border: 1px solid #c9c2b3;
+  border-radius: 8px;
+  width: 100%;
+  font: inherit;
+  margin: 6px 0;
+}
+.question { padding: 13px; background: #f8f5ec; border-radius: 10px; margin: 12px 0; }
+.feedback { font-weight: bold; margin-top: 8px; }
+iframe { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 10px; }
+.memory-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 550px; }
+.memory-card { height: 85px; font-size: 1.5rem; background: #d8e7d5; color: #203027; }
+.memory-card.revealed, .memory-card.matched { background: #f4e8c8; }
+.crossword { display: grid; grid-template-columns: repeat(8, minmax(25px, 42px)); gap: 3px; margin: 15px 0; }
+.crossword input {
+  width: 100%; aspect-ratio: 1; text-align: center;
+  text-transform: uppercase; padding: 0; margin: 0;
+}
+.crossword input.blocked { background: #264b35; border-color: #264b35; pointer-events: none; }
+.pill { display: inline-block; background: #e4eddc; padding: 4px 9px; border-radius: 20px; }
+footer { text-align: center; padding: 28px; background: #173f2a; color: white; margin-top: 30px; }
+@media(max-width:700px) {
+  .memory-card { height: 70px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌵 Cariri Paraibano Interativo</h1>
+  <p>Explore a Caatinga, conheça a cultura e os municípios do Cariri paraibano e aprenda jogando.</p>
+</header>
+
+<nav>
+  <a href="#inicio">Início</a>
+  <a href="#territorio">Território</a>
+  <a href="#videos">Vídeos</a>
+  <a href="#quiz">Quiz</a>
+  <a href="#cruzadas">Palavras cruzadas</a>
+  <a href="#memoria">Jogo da memória</a>
+  <a href="#missao">Missão ambiental</a>
+  <a href="#anotacoes">Anotações</a>
+</nav>
+
+<main>
+<section id="inicio" class="card">
+  <span class="pill">Geografia • Meio ambiente • Cultura</span>
+  <h2>Conhecer para valorizar</h2>
+  <p>O Cariri paraibano integra o semiárido nordestino e apresenta paisagens marcadas pela Caatinga, chuvas irregulares, adaptação à seca, agricultura, criação de animais e forte patrimônio cultural.</p>
+  <p>Explore as seções, assista a vídeos e teste seus conhecimentos.</p>
+</section>
+
+<section id="territorio" class="card">
+  <h2>📍 Conheça o território</h2>
+  <div class="grid">
+    <div class="tile"><h3>🌦️ Clima</h3><p>Predomina o clima semiárido, com chuvas escassas e irregulares e períodos de estiagem.</p></div>
+    <div class="tile"><h3>🌵 Caatinga</h3><p>Bioma exclusivamente brasileiro, com plantas adaptadas à falta de água, como cactos e arbustos.</p></div>
+    <div class="tile"><h3>💧 Água</h3><p>Cisternas, açudes e barragens ajudam a armazenar água. Seu uso responsável é fundamental.</p></div>
+    <div class="tile"><h3>🐐 Economia e cultura</h3><p>A pecuária, a agricultura familiar, o artesanato, a música e as festas populares integram a região.</p></div>
+  </div>
+  <h3>Desafio de observação</h3>
+  <p>Escolha um município do Cariri paraibano e registre uma paisagem, atividade econômica ou prática cultural local.</p>
+  <label>Município escolhido</label>
+  <input id="municipio" type="text" placeholder="Digite o município">
+  <label>O que você observou?</label>
+  <textarea id="observacao" rows="3" placeholder="Descreva o que observou..."></textarea>
+</section>
+
+<section id="videos" class="card">
+  <h2>▶️ Vídeos para explorar</h2>
+  <div class="grid">
+    <div class="tile">
+      <h3>Caatinga e biodiversidade</h3>
+      <iframe loading="lazy" src="https://www.youtube-nocookie.com/embed?listType=search&list=Caatinga%20bioma%20brasileiro%20educativo" title="Vídeos sobre Caatinga" allowfullscreen></iframe>
+    </div>
+    <div class="tile">
+      <h3>Desertificação no semiárido</h3>
+      <iframe loading="lazy" src="https://www.youtube-nocookie.com/embed?listType=search&list=desertificacao%20semiarido%20nordestino" title="Vídeos sobre desertificação" allowfullscreen></iframe>
+    </div>
+    <div class="tile">
+      <h3>Cariri paraibano</h3>
+      <iframe loading="lazy" src="https://www.youtube-nocookie.com/embed?listType=search&list=Cariri%20paraibano%20cultura%20paisagens" title="Vídeos sobre o Cariri paraibano" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<section id="quiz" class="card">
+  <h2>🧠 Quiz do Cariri</h2>
+  <p>Marque uma alternativa por questão e confira seu resultado.</p>
+
+  <div class="question"><p><b>1. Qual bioma predomina no Cariri paraibano?</b></p>
+    <label><input type="radio" name="q1" value="a"> Mata Atlântica</label><br>
+    <label><input type="radio" name="q1" value="b"> Caatinga</label><br>
+    <label><input type="radio" name="q1" value="c"> Pampa</label>
+  </div>
+
+  <div class="question"><p><b>2. Uma característica do clima semiárido é:</b></p>
+    <label><input type="radio" name="q2" value="a"> Chuvas abundantes o ano inteiro</label><br>
+    <label><input type="radio" name="q2" value="b"> Neve frequente</label><br>
+    <label><input type="radio" name="q2" value="c"> Chuvas irregulares e estiagens</label>
+  </div>
+
+  <div class="question"><p><b>3. O que ajuda a armazenar água da chuva?</b></p>
+    <label><input type="radio" name="q3" value="a"> Cisterna</label><br>
+    <label><input type="radio" name="q3" value="b"> Queimada</label><br>
+    <label><input type="radio" name="q3" value="c"> Desmatamento</label>
+  </div>
+
+  <div class="question"><p><b>4. A desertificação pode ser agravada por:</b></p>
+    <label><input type="radio" name="q4" value="a"> Recuperação da vegetação</label><br>
+    <label><input type="radio" name="q4" value="b"> Manejo inadequado do solo</label><br>
+    <label><input type="radio" name="q4" value="c"> Proteção de nascentes</label>
+  </div>
+
+  <div class="question"><p><b>5. Qual atitude é sustentável?</b></p>
+    <label><input type="radio" name="q5" value="a"> Desperdiçar água</label><br>
+    <label><input type="radio" name="q5" value="b"> Jogar resíduos nos açudes</label><br>
+    <label><input type="radio" name="q5" value="c"> Proteger a Caatinga</label>
+  </div>
+
+  <button onclick="corrigirQuiz()">Corrigir quiz</button>
+  <button class="secondary" onclick="limparQuiz()">Tentar novamente</button>
+  <p id="resultadoQuiz" class="feedback"></p>
+</section>
+
+<section id="cruzadas" class="card">
+  <h2>🔤 Palavras cruzadas</h2>
+  <p>Preencha as palavras na horizontal. Use letras sem acentos.</p>
+  <p>1. Bioma do Cariri (8 letras).</p>
+  <p>2. Reservatório para guardar água (8 letras).</p>
+  <p>3. Longo período com pouca chuva (8 letras).</p>
+  <div class="crossword" id="crossword"></div>
+  <button onclick="verificarCruzadas()">Verificar palavras</button>
+  <button class="secondary" onclick="mostrarCruzadas()">Mostrar respostas</button>
+  <p id="resultadoCruzadas" class="feedback"></p>
+</section>
+
+<section id="memoria" class="card">
+  <h2>🃏 Jogo da memória</h2>
+  <p>Encontre os seis pares relacionados ao semiárido.</p>
+  <p>Jogadas: <b id="jogadas">0</b> · Pares: <b id="pares">0</b>/6</p>
+  <div class="memory-board" id="memoryBoard"></div>
+  <button class="secondary" onclick="iniciarMemoria()">Reiniciar jogo</button>
+  <p id="memoryMessage"></p>
+</section>
+
+<section id="missao" class="card">
+  <h2>🌱 Missão ambiental</h2>
+  <p>Selecione as atitudes que ajudam a proteger o ambiente.</p>
+  <div id="missionOptions">
+    <label><input type="checkbox" value="1"> Proteger espécies nativas.</label><br>
+    <label><input type="checkbox" value="0"> Retirar toda a vegetação.</label><br>
+    <label><input type="checkbox" value="1"> Evitar o desperdício de água.</label><br>
+    <label><input type="checkbox" value="1"> Recolher resíduos e descartá-los corretamente.</label><br>
+    <label><input type="checkbox" value="0"> Fazer queimadas sem planejamento.</label><br>
+    <label><input type="checkbox" value="1"> Investigar os problemas ambientais locais.</label>
+  </div>
+  <button onclick="corrigirMissao()">Conferir missão</button>
+  <p id="resultadoMissao" class="feedback"></p>
+</section>
+
+<section id="anotacoes" class="card">
+  <h2>📝 Minhas anotações</h2>
+  <p>Registre uma descoberta, uma dúvida e uma proposta para valorizar o Cariri.</p>
+  <textarea id="notas" rows="6" placeholder="Hoje aprendi que..."></textarea>
+  <button onclick="baixarAnotacoes()">Baixar minhas anotações</button>
+</section>
+</main>
+
+<footer>
+  <p>Projeto educativo • Cariri Paraibano Interativo</p>
+  <p>Material de apoio para Geografia e Educação Ambiental.</p>
+</footer>
+
+<script>
+function corrigirQuiz() {
+  const respostas = {q1:"b", q2:"c", q3:"a", q4:"b", q5:"c"};
+  let pontos = 0;
+  let respondidas = 0;
+
+  for (const [q, r] of Object.entries(respostas)) {
+    const marcado = document.querySelector('input[name="' + q + '"]:checked');
+    if (marcado) {
+      respondidas++;
+      if (marcado.value === r) pontos++;
+    }
+  }
+
+  const el = document.getElementById("resultadoQuiz");
+  if (respondidas < 5) {
+    el.textContent = "Responda às cinco questões antes de conferir.";
+    return;
+  }
+  el.textContent = `Você acertou ${pontos} de 5 questões!`;
+}
+
+function limparQuiz() {
+  document.querySelectorAll('#quiz input[type="radio"]').forEach(x => x.checked = false);
+  document.getElementById("resultadoQuiz").textContent = "";
+}
+
+const palavras = [
+  {word:"CAATINGA", row:0, col:0},
+  {word:"CISTERNA", row:2, col:0},
+  {word:"ESTIAGEM", row:4, col:0}
+];
+
+function montarCruzadas() {
+  const grid = document.getElementById("crossword");
+  grid.innerHTML = "";
+
+  for (let r = 0; r < 6; r++) {
+    for (let c = 0; c < 8; c++) {
+      const cell = document.createElement("input");
+      cell.maxLength = 1;
+      cell.autocomplete = "off";
+
+      const pertence = palavras.some(p =>
+        p.row === r && c >= p.col && c < p.col + p.word.length
+      );
+
+      if (!pertence) {
+        cell.className = "blocked";
+        cell.disabled = true;
+      } else {
+        cell.dataset.row = r;
+        cell.dataset.col = c;
+      }
+      grid.appendChild(cell);
+    }
+  }
+}
+
+function verificarCruzadas() {
+  let acertos = 0;
+
+  palavras.forEach(p => {
+    let atual = "";
+    for (let i = 0; i < p.word.length; i++) {
+      const el = document.querySelector(
+        `#crossword input[data-row="${p.row}"][data-col="${p.col+i}"]`
+      );
+      atual += (el.value || "").toUpperCase();
+    }
+    if (atual === p.word) acertos++;
+  });
+
+  document.getElementById("resultadoCruzadas").textContent =
+    `Você completou corretamente ${acertos} de 3 palavras.`;
+}
+
+function mostrarCruzadas() {
+  palavras.forEach(p => {
+    for (let i = 0; i < p.word.length; i++) {
+      const el = document.querySelector(
+        `#crossword input[data-row="${p.row}"][data-col="${p.col+i}"]`
+      );
+      el.value = p.word[i];
+    }
+  });
+  document.getElementById("resultadoCruzadas").textContent =
+    "Respostas: CAATINGA, CISTERNA e ESTIAGEM.";
+}
+
+const paresMemoria = [
+  "🌵","🌵","💧","💧","🐐","🐐",
+  "☀️","☀️","🌱","🌱","🏺","🏺"
+];
+
+let primeira = null;
+let bloqueado = false;
+let jogadas = 0;
+let paresEncontrados = 0;
+
+function iniciarMemoria() {
+  const board = document.getElementById("memoryBoard");
+  board.innerHTML = "";
+  primeira = null;
+  bloqueado = false;
+  jogadas = 0;
+  paresEncontrados = 0;
+
+  document.getElementById("jogadas").textContent = "0";
+  document.getElementById("pares").textContent = "0";
+  document.getElementById("memoryMessage").textContent = "";
+
+  const embaralhadas = [...paresMemoria].sort(() => Math.random() - 0.5);
+
+  embaralhadas.forEach(emoji => {
+    const b = document.createElement("button");
+    b.className = "memory-card";
+    b.textContent = "?";
+    b.dataset.emoji = emoji;
+    b.onclick = () => virarCarta(b);
+    board.appendChild(b);
+  });
+}
+
+function virarCarta(carta) {
+  if (bloqueado || carta.classList.contains("matched") || carta === primeira) return;
+
+  carta.textContent = carta.dataset.emoji;
+  carta.classList.add("revealed");
+
+  if (!primeira) {
+    primeira = carta;
+    return;
+  }
+
+  jogadas++;
+  document.getElementById("jogadas").textContent = jogadas;
+
+  if (primeira.dataset.emoji === carta.dataset.emoji) {
+    primeira.classList.add("matched");
+    carta.classList.add("matched");
+    primeira.disabled = true;
+    carta.disabled = true;
+    paresEncontrados++;
+    document.getElementById("pares").textContent = paresEncontrados;
+    primeira = null;
+
+    if (paresEncontrados === 6) {
+      document.getElementById("memoryMessage").textContent =
+        `Parabéns! Você encontrou todos os pares em ${jogadas} jogadas.`;
+    }
+  } else {
+    bloqueado = true;
+    const anterior = primeira;
+
+    setTimeout(() => {
+      anterior.textContent = "?";
+      carta.textContent = "?";
+      anterior.classList.remove("revealed");
+      carta.classList.remove("revealed");
+      primeira = null;
+      bloqueado = false;
+    }, 850);
+  }
+}
+
+function corrigirMissao() {
+  let corretas = 0;
+  let marcadas = 0;
+
+  document.querySelectorAll("#missionOptions input").forEach(x => {
+    if (x.checked) {
+      marcadas++;
+      if (x.value === "1") corretas++;
+    }
+  });
+
+  const msg = document.getElementById("resultadoMissao");
+
+  if (!marcadas) {
+    msg.textContent = "Selecione pelo menos uma atitude.";
+    return;
+  }
+
+  msg.textContent = `Você selecionou ${corretas} atitudes sustentáveis corretas.`;
+}
+
+function baixarAnotacoes() {
+  const texto =
+    "Cariri Paraibano Interativo\n" +
+    "Município: " + document.getElementById("municipio").value + "\n" +
+    "Observação: " + document.getElementById("observacao").value + "\n\n" +
+    "Anotações:\n" + document.getElementById("notas").value;
+
+  const blob = new Blob([texto], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "anotacoes_cariri_paraibano.txt";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+montarCruzadas();
+iniciarMemoria();
+</script>
+</body>
+</html>
